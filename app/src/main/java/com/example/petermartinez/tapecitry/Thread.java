@@ -19,7 +19,7 @@ public class Thread {
     int assetCheat;
     int assetCheatColor;
     int distToPoint;
-    float bearingToPoint;
+    int bearingToPoint;
     int user;
 
 
@@ -35,7 +35,7 @@ public class Thread {
         this.assetCheat = assetCheat;
         this.assetCheatColor = assetCheatColor;
         this.distToPoint = -1;
-        this.bearingToPoint = -1f;
+        this.bearingToPoint = -1;
         this.user = user;
     }
 
@@ -52,12 +52,40 @@ public class Thread {
         this.assetCheat = getRandomAsset((int) (16 * Math.random()));
         this.assetCheatColor = getRandomAssetColor((int) (16 * Math.random()));
         this.distToPoint = -1;
-        this.bearingToPoint = -1f;
+        this.bearingToPoint = -1;
         this.user = 7;
     }
 
+    public static int haversineTwoPoints(float lat1, float lon1, float lat2, float lon2){
+        int R = 6378100;
+            float latDistance = toRad(lat2-lat1);
+            float lonDistance = toRad(lon2-lon1);
+            float a = (float) (Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                            Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2));
+            float c = (float) (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+            return (int) (R * c);
+        }
 
-    public Thread newRandomThread(String newTitle){
+        private static float toRad(float value) {
+            return (float) (value * Math.PI / 180);
+        }
+
+        public static int bearing(float lat1, float lon1, float lat2, float lon2){
+            double longitude1 = lon1;
+            double longitude2 = lon2;
+            double latitude1 = Math.toRadians(lat1);
+            double latitude2 = Math.toRadians(lat2);
+            double longDiff= Math.toRadians(longitude2-longitude1);
+            double y= Math.sin(longDiff)*Math.cos(latitude2);
+            double x=Math.cos(latitude1)*Math.sin(latitude2)-Math.sin(latitude1)*Math.cos(latitude2)*Math.cos(longDiff);
+            double resultDegree= (Math.toDegrees(Math.atan2(y, x))+360)%360;
+            return (int) resultDegree;
+        }
+
+
+
+    public static Thread newRandomThread(String newTitle){
         if(newTitle.equals("")){
             newTitle = getRandomName();
         }
@@ -65,10 +93,10 @@ public class Thread {
         return newThread;
     }
 
-    public String getRandomName(){
-        String[] article = {"The", "El", "La", "Los", "Las", "The", "The", "The", "A", "A", "" , "" , "", "" ,"",""};
-        String[] place = {"Mission", "Valencia", "Coit", "Gold Rush", "Google", "Market", "Alcatraz", "Marin", "Potrero", "", "", "","",""};
-        String[] thing = {"Cafe", "Taqueria", "Building", "Bistro", "Memorial", "Festival", "Massacre", "Battle", "Concert", "Tower", "Company", "","","","","",""};
+    public static String getRandomName(){
+        String[] article = {"The", "El", "La", "Los", "Las", "The", "The", "The", "A", "A", "" , "" , "", ""};
+        String[] place = {"Mission", "Valencia", "Coit", "Gold Rush", "Google", "Market", "Alcatraz", "Marin", "Potrero", "", "", "",""};
+        String[] thing = {"Cafe", "Taqueria", "Building", "Bistro", "Memorial", "Festival", "Massacre", "Battle", "Concert", "Tower", "Company", "","","",""};
         String name = "";
         int temp = (int) (Math.random()*article.length);
         name = name + article[temp];
@@ -83,6 +111,45 @@ public class Thread {
     }
 
     public int getRandomAsset(int asset) {
+        switch (asset) {
+            case 0:
+                return (android.R.drawable.ic_menu_search);
+            case 1:
+                return (android.R.drawable.sym_def_app_icon);
+            case 2:
+                return (android.R.drawable.ic_dialog_map);
+            case 3:
+                return (android.R.drawable.ic_menu_compass);
+            case 4:
+                return (android.R.drawable.ic_lock_idle_low_battery);
+            case 5:
+                return (android.R.drawable.presence_video_away);
+            case 6:
+                return (android.R.drawable.presence_audio_online);
+            case 7:
+                return (android.R.drawable.sym_call_missed);
+            case 8:
+                return (android.R.drawable.ic_menu_always_landscape_portrait);
+            case 9:
+                return (android.R.drawable.ic_menu_report_image);
+            case 10:
+                return (android.R.drawable.ic_menu_close_clear_cancel);
+            case 11:
+                return (android.R.drawable.ic_menu_crop);
+            case 12:
+                return (android.R.drawable.ic_menu_gallery);
+            case 13:
+                return (android.R.drawable.ic_menu_upload_you_tube);
+            case 14:
+                return (android.R.drawable.ic_menu_week);
+            case 15:
+                return (android.R.drawable.btn_radio);
+            default:
+                return (android.R.drawable.btn_dropdown);
+        }
+    }
+
+    public int getRandomAsset2(int asset) {
         switch (asset) {
             case 0:
                 return (R.drawable.alamosquare);
@@ -166,7 +233,7 @@ public class Thread {
     }
 
     public float getRandomSFLon(){
-        return ((float) (-122.450963 + .060157 * Math.random()));
+        return ((float) (.060157 * Math.random() - 122.450963));
     }
 
     public String getTitle() {
@@ -261,7 +328,7 @@ public class Thread {
         return bearingToPoint;
     }
 
-    public void setBearingToPoint(float bearingToPoint) {
+    public void setBearingToPoint(int bearingToPoint) {
         this.bearingToPoint = bearingToPoint;
     }
 

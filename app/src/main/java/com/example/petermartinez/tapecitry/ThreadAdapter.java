@@ -20,10 +20,10 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent) {
         Thread thread = getItem(position);
-        if (convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.results_list, parent, false);
+        if (view == null){
+            view = LayoutInflater.from(getContext()).inflate(R.layout.results_list, parent, false);
         }
 
         ImageView assetThumb = (ImageView) view.findViewById(R.id.asset_thumbnail);
@@ -37,19 +37,49 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
         TextView distance = (TextView) view.findViewById(R.id.distance);
         TextView compass = (TextView) view.findViewById(R.id.compass);
 
+
         assetThumb.setImageResource(thread.getAssetCheat());
+        assetThumb.setColorFilter(thread.getAssetCheatColor());
         assetThumb.setBackgroundColor(thread.getAssetCheatColor());
         ratingBar.setRating(thread.getRating());
-        duration.setText(thread.getDuration());
+        duration.setText(secondsToColons(thread.getDuration()));
 
         threadTitle.setText(thread.getTitle());
-        threadAge.setText((int) thread.getDateCreated());
-        threadViews.setText(thread.getViews());
+        threadAge.setText("created " + String.valueOf(thread.getDateCreated()/86400000 - 16873) + " days ago");
+        threadViews.setText(String.valueOf(thread.getViews()) + " views");
 
-        distance.setText(thread.getDistToPoint());
-        compass.setText(Float.toString(thread.getBearingToPoint()));
+        distance.setText(formatDistance(thread.getDistToPoint()));
+        compass.setText(getBearing(Math.round(thread.getBearingToPoint())));
 
-        return convertView;
+        return view;
+    }
+
+    private String formatDistance(int meters){
+        String string = String.valueOf(Math.round(meters * 0.000621371));
+        String string2 = String.valueOf(Math.round(meters * 0.00621371));//actually makes it ten times longer
+        string = string + "." + string2.charAt(string2.length()-1);
+        return string;
+    }
+
+    private String getBearing(int bearing){
+        String coordNames[] = {"N","NNE", "NE","ENE","E", "ESE","SE","SSE", "S","SSW", "SW","WSW", "W","WNW", "NW","NNW", "N"};
+        double directionid = Math.round(bearing / 22.5);
+        // no of array contain 360/16=22.5
+        if (directionid < 0) {
+            directionid = directionid + 16;
+            //no. of contains in array
+        }
+        return coordNames[(int) directionid];
+    }
+
+    private String secondsToColons(int dur){
+        int sec = dur%60;
+        dur = dur - sec;
+        int min = (int) (dur/60);
+        String colons = String.valueOf(min) + ":";
+        if(sec < 10){ colons = colons + "0";}
+        colons = colons + String.valueOf(sec);
+        return colons;
     }
 
 }

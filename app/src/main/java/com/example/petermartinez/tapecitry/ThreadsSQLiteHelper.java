@@ -40,21 +40,21 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
             "CREATE TABLE " + THREADS_TABLE_NAME +
                     "(" +
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COL_USER_ID + " INTEGER " +
-                    COL_THR_TITLE + " TEXT " +
-                    COL_KNOT + " INTEGER " +
-                    COL_KNOT_COUNT + " INTEGER " +
-                    COL_NODE + " INTEGER " +
-                    COL_DATE_CRE + " LONG " +
-                    COL_DATE_MOD + "LONG " +
-                    COL_ASSET_TYPES + "INTEGER " +
-                    COL_ASSET_COUNT + "INTEGER " +
-                    COL_LAT + " FLOAT " +
-                    COL_LON + " FLOAT " +
-                    COL_DUR + " INTEGER " +
-                    COL_RATING + " FLOAT " +
-                    COL_RATINGS + " INTEGER " +
-                    COL_LENGTH + " INTEGER " +
+                    COL_USER_ID + " INTEGER, " +
+                    COL_THR_TITLE + " TEXT, " +
+                    COL_KNOT + " INTEGER, " +
+                    COL_KNOT_COUNT + " INTEGER, " +
+                    COL_NODE + " INTEGER, " +
+                    COL_DATE_CRE + " LONG, " +
+                    COL_DATE_MOD + " LONG, " +
+                    COL_ASSET_TYPES + " INTEGER, " +
+                    COL_ASSET_COUNT + " INTEGER, " +
+                    COL_LAT + " FLOAT, " +
+                    COL_LON + " FLOAT, " +
+                    COL_DUR + " INTEGER, " +
+                    COL_RATING + " FLOAT, " +
+                    COL_RATINGS + " INTEGER, " +
+                    COL_LENGTH + " INTEGER, " +
                     COL_VIEWS + " INTEGER )";
 
 

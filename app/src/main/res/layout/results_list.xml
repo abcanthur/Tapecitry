@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:baselineAligned="false"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -20,7 +21,7 @@
         />
     <RatingBar
         android:id="@+id/rating_bar"
-        android:style="?android:attr/ratingBarStyleSmall"
+        style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
@@ -29,6 +30,7 @@
         android:numStars="5"
         android:rating="3.75"
         android:stepSize=".25" />
+        <!-- android:style="?android:attr/ratingBarStyleSmall" -->
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,7 +55,7 @@
         android:layout_margin="4dp"
         android:id="@+id/thread_title"
         android:text="thread"
-        android:textSize="24dp"
+        android:textSize="24sp"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -61,8 +63,8 @@
         android:layout_margin="4dp"
         android:id="@+id/thread_age"
         android:text="5 days old"
-        android:textSize="16dp"
-        android:layout_below="@+id/thread_title"
+        android:textSize="12sp"
+        android:layout_below="@id/thread_title"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -70,9 +72,9 @@
         android:layout_margin="4dp"
         android:id="@+id/thread_views"
         android:text="1,023 views"
-        android:textSize="16dp"
-        android:layout_below="@+id/thread_title"
-        android:layout_toRightOf="@+id/thread_age"
+        android:textSize="12sp"
+        android:layout_below="@id/thread_title"
+        android:layout_toRightOf="@id/thread_age"
         />
 </RelativeLayout>
 
@@ -84,21 +86,19 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight = "1"
-        android:layout_toRightOf="@id/thread_title"
+        android:layout_weight="1"
         android:gravity="center"
         android:text=".6 mi"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:id="@+id/distance"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight ="1"
         android:gravity="center"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:id="@+id/compass"
-        android:text="<"
-        />
+        android:text="N"/>
 </LinearLayout>
 
 
