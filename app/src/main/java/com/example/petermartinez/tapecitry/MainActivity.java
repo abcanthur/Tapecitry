@@ -1,7 +1,7 @@
 package com.example.petermartinez.tapecitry;
 
 import android.content.ContentValues;
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,14 +29,23 @@ public class MainActivity extends AppCompatActivity {
     public ThreadAdapter mThreadAdapter;
     private CursorAdapter mCursorAdapter;
     private SQLiteDatabase db;
-    public static final String DB_DOES_NOT_EXIST = "true";
     public final float GALat = 37.791066f;
     public final float GALon = -122.401403f;
+    public static final String CREATION_TIME_STAMP = "creationTimeStamp";
+    public boolean isFirstRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(isFirstRun) {
+            Intent intent = new Intent(MainActivity.this, DBpreload.class);//preload database if necessary, splash screen
+            intent.putExtra(CREATION_TIME_STAMP, System.currentTimeMillis());
+            isFirstRun = false;
+            startActivity(intent);
+        }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,33 +64,14 @@ public class MainActivity extends AppCompatActivity {
         resultsListView = (ListView) findViewById(R.id.results_list_view);
         mThreadAdapter = new ThreadAdapter(this, threadArrayList);
 
+
+
         ThreadsSQLiteHelper mDbHelper = new ThreadsSQLiteHelper(MainActivity.this);
         db = mDbHelper.getWritableDatabase();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        if(sharedPreferences.getString(DB_DOES_NOT_EXIST, "true").equals("true")){
-            Log.i("sharedPrefs",sharedPreferences.getString(DB_DOES_NOT_EXIST, "true"));
-            preloadDB();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(MainActivity.DB_DOES_NOT_EXIST, "false");
-            editor.commit();
-            Log.i("sharedPrefs", sharedPreferences.getString(DB_DOES_NOT_EXIST, "true"));
-        }
         threadArrayList.clear();
         dumpCursorToArray();
-
-
-
-
-
-
         resultsListView.setAdapter(mThreadAdapter);
-
-
-
-
-
-
 
     }
 
@@ -95,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
         values.put(ThreadsSQLiteHelper.COL_NODE, -1);
         values.put(ThreadsSQLiteHelper.COL_DATE_CRE, thread.getDateCreated());
         values.put(ThreadsSQLiteHelper.COL_DATE_MOD, thread.getDateModified());
-        values.put(ThreadsSQLiteHelper.COL_ASSET_TYPES, thread.getAssetCheat());
-        values.put(ThreadsSQLiteHelper.COL_ASSET_COUNT, thread.getAssetCheatColor());
+        values.put(ThreadsSQLiteHelper.COL_ASSET_TYPES, thread.getAssetType());
+        values.put(ThreadsSQLiteHelper.COL_ASSET_COUNT, thread.getAssetCount());
         values.put(ThreadsSQLiteHelper.COL_LAT, thread.getLat());
         values.put(ThreadsSQLiteHelper.COL_LON, thread.getLon());
         values.put(ThreadsSQLiteHelper.COL_DUR, thread.getDuration());
@@ -174,8 +163,8 @@ public class MainActivity extends AppCompatActivity {
             thread.setViews(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_VIEWS))));
             thread.setLat(Float.parseFloat(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_LAT))));
             thread.setLon(Float.parseFloat(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_LON))));
-            thread.setAssetCheat(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_ASSET_TYPES))));
-            thread.setAssetCheatColor(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_ASSET_COUNT))));
+            thread.setAssetType(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_ASSET_TYPES))));
+            thread.setAssetCount(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_ASSET_COUNT))));
             thread.setUser(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_USER_ID))));
             thread.setDistToPoint(Thread.haversineTwoPoints(GALat, GALon, thread.getLat(), thread.getLon()));
             thread.setBearingToPoint(Thread.bearing(GALat, GALon, thread.getLat(), thread.getLon()));

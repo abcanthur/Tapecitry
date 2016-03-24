@@ -40,14 +40,14 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
         TextView distance = (TextView) view.findViewById(R.id.distance);
         TextView compass = (TextView) view.findViewById(R.id.compass);
 
-        ColorFilter cf = new PorterDuffColorFilter(thread.getAssetCheatColor(), PorterDuff.Mode.MULTIPLY);
+        ColorFilter cf = new PorterDuffColorFilter(thread.getAssetCount(), PorterDuff.Mode.MULTIPLY);
 
-        assetThumb.setImageResource(thread.getAssetCheat());
+        assetThumb.setImageResource(thread.getAssetType());
 //        assetThumb.setColorFilter(cf);
-//        assetThumb.setBackgroundColor(thread.getAssetCheatColor());
+//        assetThumb.setBackgroundColor(thread.getAssetCount());
 //        assetThumb.setImageAlpha(150);
-//        assetThumb.setColorFilter(thread.getAssetCheatColor(), PorterDuff.Mode.LIGHTEN);
-//        assetThumb.setBackgroundColor(thread.getAssetCheatColor());
+//        assetThumb.setColorFilter(thread.getAssetCount(), PorterDuff.Mode.LIGHTEN);
+//        assetThumb.setBackgroundColor(thread.getAssetCount());
         ratingBar.setRating(thread.getRating());
         duration.setText(secondsToColons(thread.getDuration()));
 

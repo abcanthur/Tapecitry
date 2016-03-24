@@ -3,42 +3,47 @@ package com.example.petermartinez.tapecitry;
 
 import android.util.Log;
 
-import java.math.RoundingMode;
-import java.util.Date;
-
 /**
  * Created by petermartinez on 3/21/16.
  */
 public class Thread {
+    int user;
     String title;
-    float rating;
-    int duration;
+    int knot;
+    int knotCount;
+    int node;
     long dateCreated;
     long dateModified;
-    int views;
+    int assetType;
+    int assetCount;
     float lat;
     float lon;
-    int assetCheat;
-    int assetCheatColor;
+    int duration;
+    float rating;
+    int ratingCount;
+    int length;
+    int views;
     int distToPoint;
     int bearingToPoint;
-    int user;
 
 
-    public Thread(String title, float rating, int duration, long dateCreated, long dateModified, int views, float lat, float lon, int assetCheat, int assetCheatColor, int user) {
+    public Thread(int user, String title, int knot, int knotCount, int node, long dateCreated, long dateModified, int assetType, int assetCount, float lat, float lon, int duration, float rating, int ratingCount, int length, int views) {
+        this.user = user;
         this.title = title;
-        this.rating = rating;
-        this.duration = duration;
+        this.knot = knot;
+        this.knotCount = knotCount;
+        this.node = node;
         this.dateCreated = dateCreated;
         this.dateModified = dateModified;
-        this.views = views;
+        this.assetType = assetType;
+        this.assetCount = assetCount;
         this.lat = lat;
         this.lon = lon;
-        this.assetCheat = assetCheat;
-        this.assetCheatColor = assetCheatColor;
-        this.distToPoint = -1;
-        this.bearingToPoint = -1;
-        this.user = user;
+        this.duration = duration;
+        this.rating = rating;
+        this.ratingCount = ratingCount;
+        this.length = length;
+        this.views = views;
     }
 
     public Thread(String title) {
@@ -51,8 +56,8 @@ public class Thread {
         this.views = (int) (5000*Math.random());
         this.lat = getRandomSFLat();
         this.lon = getRandomSFLon();
-        this.assetCheat = getRandomAsset((int) (16 * Math.random()));
-        this.assetCheatColor = getRandomAssetColor((int) (16 * Math.random()));
+        this.assetType = getRandomAsset((int) (16 * Math.random()));
+        this.assetCount = getRandomAssetColor((int) (16 * Math.random()));
         this.distToPoint = -1;
         this.bearingToPoint = -1;
         this.user = 7;
@@ -310,20 +315,20 @@ public class Thread {
         this.lon = lon;
     }
 
-    public int getAssetCheat() {
-        return assetCheat;
+    public int getAssetType() {
+        return assetType;
     }
 
-    public void setAssetCheat(int assetCheat) {
-        this.assetCheat = assetCheat;
+    public void setAssetType(int assetType) {
+        this.assetType = assetType;
     }
 
-    public int getAssetCheatColor() {
-        return assetCheatColor;
+    public int getAssetCount() {
+        return assetCount;
     }
 
-    public void setAssetCheatColor(int assetCheatColor) {
-        this.assetCheatColor = assetCheatColor;
+    public void setAssetCount(int assetCount) {
+        this.assetCount = assetCount;
     }
 
     public int getDistToPoint() {
@@ -348,6 +353,46 @@ public class Thread {
 
     public void setUser(int user) {
         this.user = user;
+    }
+
+    public int getKnot() {
+        return knot;
+    }
+
+    public void setKnot(int knot) {
+        this.knot = knot;
+    }
+
+    public int getKnotCount() {
+        return knotCount;
+    }
+
+    public void setKnotCount(int knotCount) {
+        this.knotCount = knotCount;
+    }
+
+    public int getNode() {
+        return node;
+    }
+
+    public void setNode(int node) {
+        this.node = node;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
     }
 }
 
