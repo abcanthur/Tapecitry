@@ -122,7 +122,7 @@ public class Thread {
         return name;
     }
 
-    public int getRandomAsset(int asset) {
+    public int getRandomAsset2(int asset) {
         switch (asset) {
             case 0:
                 return (android.R.drawable.ic_menu_search);
@@ -161,7 +161,7 @@ public class Thread {
         }
     }
 
-    public int getRandomAsset2(int asset) {
+    public int getRandomAsset(int asset) {
         switch (asset) {
             case 0:
                 return (R.drawable.alamosquare);

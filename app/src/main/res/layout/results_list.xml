@@ -16,21 +16,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/asset_thumbnail"
-        android:src="@drawable/mine1"
-        android:scaleType="centerCrop"
+        android:src="@android:drawable/ic_dialog_alert"
+
         />
+        <!--android:scaleType="centerCrop"-->
     <RatingBar
         android:id="@+id/rating_bar"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="5dp"
-        android:layout_alignBottom="@id/asset_thumbnail"
+        android:layout_alignTop="@id/asset_thumbnail"
         android:layout_alignLeft="@id/asset_thumbnail"
+        android:layout_margin="4dp"
         android:numStars="5"
         android:rating="3.75"
         android:stepSize=".25" />
-        <!-- android:style="?android:attr/ratingBarStyleSmall" -->
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,6 +40,8 @@
         android:id="@+id/duration"
         android:layout_alignBottom="@id/asset_thumbnail"
         android:layout_alignRight="@id/asset_thumbnail"
+
+        android:layout_margin="4dp"
         android:background="@color/button_trans"
         android:text="2:34"/>
     </RelativeLayout>

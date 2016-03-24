@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 /**
@@ -42,12 +44,13 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
 
         ColorFilter cf = new PorterDuffColorFilter(thread.getAssetCount(), PorterDuff.Mode.MULTIPLY);
 
-        assetThumb.setImageResource(thread.getAssetType());
-//        assetThumb.setColorFilter(cf);
-//        assetThumb.setBackgroundColor(thread.getAssetCount());
-//        assetThumb.setImageAlpha(150);
-//        assetThumb.setColorFilter(thread.getAssetCount(), PorterDuff.Mode.LIGHTEN);
-//        assetThumb.setBackgroundColor(thread.getAssetCount());
+        Picasso.with(getContext())
+                .load(thread.getAssetType())
+                .placeholder(android.R.drawable.ic_dialog_alert)
+                .resize(100, 100) //wish I could do this dynamically, w,h of assetThumb
+                .centerCrop()
+                .into(assetThumb);
+
         ratingBar.setRating(thread.getRating());
         duration.setText(secondsToColons(thread.getDuration()));
 
@@ -62,8 +65,8 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
     }
 
     private String formatDistance(int meters){
-        String string = String.valueOf(Math.round(meters * 0.000621371)+1);
-        String string2 = String.valueOf(Math.round(meters * 0.00621371)+10);//actually makes it ten times longer
+        String string = String.valueOf(Math.round((meters + 161) * 0.000621371)); //+161 ensures it's at least a tenth of a mile, very hacky
+        String string2 = String.valueOf(Math.round((meters + 161) * 0.00621371));//actually makes it ten times longer
         string = string + "." + string2.charAt(string2.length()-1);
         return string;
     }
