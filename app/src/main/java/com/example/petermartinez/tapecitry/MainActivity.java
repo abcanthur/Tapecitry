@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
@@ -138,14 +139,35 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            //noinspection SimplifiableIfStatement
+            case R.id.action_settings:
+                return true;
+            case R.id.sortAge:
+                sortResultsBy("Age");
+                return true;
+            case R.id.sortDistance:
+                sortResultsBy("Distance");
+                return true;
+            case R.id.sortDuration:
+                sortResultsBy("Duration");
+                return true;
+            case R.id.sortRating:
+                sortResultsBy("Rating");
+                return true;
+            case R.id.sortViews:
+                sortResultsBy("Views");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+
+    private void sortResultsBy(String string){
+        Toast.makeText(MainActivity.this, "Sort the results by " + string, Toast.LENGTH_SHORT).show();
+        Log.i("SORT", string);
     }
 
     public void makeNewThread() {

@@ -62,8 +62,8 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
     }
 
     private String formatDistance(int meters){
-        String string = String.valueOf(Math.round(meters * 0.000621371));
-        String string2 = String.valueOf(Math.round(meters * 0.00621371));//actually makes it ten times longer
+        String string = String.valueOf(Math.round(meters * 0.000621371)+1);
+        String string2 = String.valueOf(Math.round(meters * 0.00621371)+10);//actually makes it ten times longer
         string = string + "." + string2.charAt(string2.length()-1);
         return string;
     }

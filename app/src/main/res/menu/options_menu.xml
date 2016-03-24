@@ -3,7 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/search"
         android:title="Search"
+        android:orderInCategory="1"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView" />
+    <item
+        android:id="@+id/sort"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:orderInCategory="2"
+        android:title="@string/action_sort"
+        app:showAsAction="collapseActionView|ifRoom">
+        <menu>
+            <item android:id="@+id/sortRating"
+                android:icon="@android:drawable/ic_dialog_alert"
+                android:orderInCategory="1"
+                android:title="Rating" />
+            <item android:id="@+id/sortDuration"
+                android:icon="@android:drawable/ic_dialog_dialer"
+                android:orderInCategory="2"
+                android:title="Duration" />
+            <item android:id="@+id/sortAge"
+                android:icon="@android:drawable/ic_dialog_email"
+                android:orderInCategory="3"
+                android:title="Age" />
+            <item android:id="@+id/sortViews"
+                android:icon="@android:drawable/ic_dialog_info"
+                android:orderInCategory="4"
+                android:title="Views" />
+            <item android:id="@+id/sortDistance"
+                android:icon="@android:drawable/ic_dialog_map"
+                android:orderInCategory="5"
+                android:title="Distance" />
+        </menu>
+    </item>
 </menu>
