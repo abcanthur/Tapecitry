@@ -33,6 +33,7 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
 
     public static final String[] THREADS_COLUMNS = {COL_ID, COL_USER_ID,COL_THR_TITLE,COL_KNOT,COL_KNOT_COUNT,COL_NODE,COL_DATE_CRE,COL_DATE_MOD,COL_ASSET_TYPES,COL_ASSET_COUNT,COL_LAT,COL_LON,COL_DUR,COL_RATING,COL_RATINGS,COL_LENGTH,COL_VIEWS};
 
+    private static ThreadsSQLiteHelper instance;
 
 
 
@@ -57,8 +58,6 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
                     COL_LENGTH + " INTEGER, " +
                     COL_VIEWS + " INTEGER )";
 
-
-    private static ThreadsSQLiteHelper instance;
 
     public static ThreadsSQLiteHelper getInstance(Context context){
         if(instance == null){
@@ -114,7 +113,7 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
         Cursor cursor = db.query(THREADS_TABLE_NAME, // a. table
                 THREADS_COLUMNS, // b. column names
                 COL_THR_TITLE + " LIKE ?", // c. selections
-                new String[]{query + "%"}, // d. selections args
+                new String[]{"%" + query + "%"}, // d. selections args
                 null, // e. group by
                 null, // f. having
                 null, // g. order by

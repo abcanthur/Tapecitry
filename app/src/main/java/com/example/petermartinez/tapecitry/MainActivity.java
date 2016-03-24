@@ -1,6 +1,8 @@
 package com.example.petermartinez.tapecitry;
 
+import android.app.SearchManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -10,14 +12,17 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     public EditText newThread;
     public ListView resultsListView;
     public ThreadAdapter mThreadAdapter;
-    private CursorAdapter mCursorAdapter;
     private SQLiteDatabase db;
     public final float GALat = 37.791066f;
     public final float GALon = -122.401403f;
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        handleIntent(getIntent());
 
         if(isFirstRun) {
             Intent intent = new Intent(MainActivity.this, DBpreload.class);//preload database if necessary, splash screen
@@ -66,13 +72,40 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ThreadsSQLiteHelper mDbHelper = new ThreadsSQLiteHelper(MainActivity.this);
+        ThreadsSQLiteHelper mDbHelper = ThreadsSQLiteHelper.getInstance(MainActivity.this);
         db = mDbHelper.getWritableDatabase();
 
         threadArrayList.clear();
-        dumpCursorToArray();
         resultsListView.setAdapter(mThreadAdapter);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        return true;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Cursor cursor = ThreadsSQLiteHelper.getInstance(MainActivity.this).searchThreads(query);
+            dumpCursorToArray(cursor);
+            cursor.close();
+        }
     }
 
     private long insertIntoDbFromThread(Thread thread){
@@ -100,14 +133,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -131,21 +156,17 @@ public class MainActivity extends AppCompatActivity {
         //notifydatasetchanged
 
         threadArrayList.clear();
-        dumpCursorToArray();
+        Cursor cursor = db.query("THREADS", null, null, null, null, null, null);
+        Toast.makeText(MainActivity.this, String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
+        Log.i("DB", "results count: " + String.valueOf(cursor.getCount()));
+        dumpCursorToArray(cursor);
+        cursor.close();
         mThreadAdapter.notifyDataSetChanged();
 
     }
 
-        public void dumpCursorToArray(){
-        ArrayList<Thread> tempThreadArrayList;
-        Cursor cursor = db.query("THREADS", null, null, null, null, null, null);
-            Toast.makeText(MainActivity.this, String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
-        Log.i("DB", "results count: " + String.valueOf(cursor.getCount()));
-        int colCount = cursor.getColumnCount();
-        Log.i("DB", "columns count: " + String.valueOf(colCount));
-        String[] colNames = cursor.getColumnNames();
-
-
+        public void dumpCursorToArray(Cursor cursor){
+            threadArrayList.clear();
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             Thread thread = new Thread("cursor rip");
@@ -170,8 +191,9 @@ public class MainActivity extends AppCompatActivity {
             thread.setBearingToPoint(Thread.bearing(GALat, GALon, thread.getLat(), thread.getLon()));
             cursor.moveToNext();
             threadArrayList.add(thread);
+            mThreadAdapter.notifyDataSetChanged();
         }
-            cursor.close();
+
 
     }
 

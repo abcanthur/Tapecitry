@@ -1,6 +1,8 @@
 package com.example.petermartinez.tapecitry;
 
+import android.app.SearchManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,13 +10,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 /**
  * Created by petermartinez on 3/23/16.
  */
 public class DBpreload extends AppCompatActivity {
-    public static final String DB_EXISTS = "false";
+    public static final String DB_EXISTS = "db_exists";
     private SQLiteDatabase db;
     private static final String TAG = "DB_PRELOAD";
     static long  creationTimeStamp;
@@ -25,7 +30,7 @@ public class DBpreload extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            ThreadsSQLiteHelper mDbHelper = new ThreadsSQLiteHelper(DBpreload.this);
+            ThreadsSQLiteHelper mDbHelper = ThreadsSQLiteHelper.getInstance(DBpreload.this);
             db = mDbHelper.getWritableDatabase();
 
             Intent intent = getIntent();
@@ -36,7 +41,7 @@ public class DBpreload extends AppCompatActivity {
                 Log.i(TAG, sharedPreferences.getString(DB_EXISTS, "false"));
                 preloadDB();
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(DBpreload.DB_EXISTS, "false"); //
+                editor.putString(DBpreload.DB_EXISTS, "true"); //
                 editor.commit();
                 Log.i(TAG, sharedPreferences.getString(DB_EXISTS, "true"));
             }
@@ -44,6 +49,9 @@ public class DBpreload extends AppCompatActivity {
             finish();
 
         }
+
+
+
 
 
     //User IDS
