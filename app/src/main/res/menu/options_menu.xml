@@ -12,16 +12,16 @@
         android:icon="@android:drawable/ic_menu_sort_by_size"
         android:orderInCategory="2"
         android:title="@string/action_sort"
-        app:showAsAction="collapseActionView|ifRoom">
+        app:showAsAction="ifRoom">
         <menu>
+            <item android:id="@+id/sortDistance"
+                android:icon="@android:drawable/ic_dialog_map"
+                android:orderInCategory="1"
+                android:title="Distance" />
             <item android:id="@+id/sortRating"
                 android:icon="@android:drawable/ic_dialog_alert"
-                android:orderInCategory="1"
-                android:title="Rating" />
-            <item android:id="@+id/sortDuration"
-                android:icon="@android:drawable/ic_dialog_dialer"
                 android:orderInCategory="2"
-                android:title="Duration" />
+                android:title="Rating" />
             <item android:id="@+id/sortAge"
                 android:icon="@android:drawable/ic_dialog_email"
                 android:orderInCategory="3"
@@ -30,10 +30,14 @@
                 android:icon="@android:drawable/ic_dialog_info"
                 android:orderInCategory="4"
                 android:title="Views" />
-            <item android:id="@+id/sortDistance"
-                android:icon="@android:drawable/ic_dialog_map"
+            <item android:id="@+id/sortDuration"
+                android:icon="@android:drawable/ic_dialog_dialer"
                 android:orderInCategory="5"
-                android:title="Distance" />
+                android:title="Duration" />
+            <item android:id="@+id/sortTitle"
+                android:icon="@android:drawable/ic_popup_disk_full"
+                android:orderInCategory="6"
+                android:title="Title" />
         </menu>
     </item>
 </menu>

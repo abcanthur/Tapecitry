@@ -12,13 +12,13 @@
     tools:context="com.example.petermartinez.tapecitry.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <EditText
+    <!-- <EditText
         android:id="@+id/new_thread_maker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="enter Thread name"
         android:text=""
-        />
+        /> -->
     <ListView
         android:id="@+id/results_list_view"
         android:layout_below="@+id/new_thread_maker"

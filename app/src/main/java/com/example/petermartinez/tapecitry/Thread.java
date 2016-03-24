@@ -1,11 +1,15 @@
 package com.example.petermartinez.tapecitry;
 
 
+import android.annotation.TargetApi;
 import android.util.Log;
+
+import java.util.Comparator;
 
 /**
  * Created by petermartinez on 3/21/16.
  */
+@TargetApi(19)
 public class Thread {
     int user;
     String title;
@@ -394,6 +398,42 @@ public class Thread {
     public void setLength(int length) {
         this.length = length;
     }
+
+    public static Comparator<Thread> titleComparator = new Comparator<Thread>() {
+        public int compare(Thread t1, Thread t2) {
+//            String title1 = t1.getTitle().toUpperCase();
+//            String title2 = t2.getTitle().toUpperCase();
+//
+//            //ascending order
+            return t1.getTitle().toUpperCase().compareTo(t2.getTitle().toUpperCase());
+        }};
+
+    public static Comparator<Thread> ratingComparator = new Comparator<Thread>() {
+        public int compare(Thread t1, Thread t2) {
+            return Float.compare(t2.getRating(), t1.getRating());
+        }};
+
+    public static Comparator<Thread> durationComparator = new Comparator<Thread>() {
+        public int compare(Thread t1, Thread t2) {
+            return t1.getDuration() - t2.getDuration();
+        }};
+
+    public static Comparator<Thread> distanceComparator = new Comparator<Thread>() {
+        public int compare(Thread t1, Thread t2) {
+            return t1.getDistToPoint() - t2.getDistToPoint();
+        }};
+
+
+    public static Comparator<Thread> ageComparator = new Comparator<Thread>() {
+        public int compare(Thread t1, Thread t2) {
+            return Long.compare(t1.getDateCreated(), t2.getDateCreated());
+        }};
+
+    public static Comparator<Thread> viewsComparator = new Comparator<Thread>() {
+        public int compare(Thread t1, Thread t2) {
+            return t2.getViews() - t1.getViews();
+        }};
+
 }
 
 

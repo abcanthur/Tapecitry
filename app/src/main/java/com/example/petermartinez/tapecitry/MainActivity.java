@@ -26,6 +26,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     public ArrayList<Thread> threadArrayList;
@@ -159,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.sortViews:
                 sortResultsBy("Views");
                 return true;
+            case R.id.sortTitle:
+                sortResultsBy("Title");
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -168,10 +172,33 @@ public class MainActivity extends AppCompatActivity {
     private void sortResultsBy(String string){
         Toast.makeText(MainActivity.this, "Sort the results by " + string, Toast.LENGTH_SHORT).show();
         Log.i("SORT", string);
+        switch (string) {
+            case "Age":
+                Collections.sort(threadArrayList, Thread.ageComparator);
+                break;
+            case "Distance":
+                Collections.sort(threadArrayList, Thread.distanceComparator);
+                break;
+            case "Duration":
+                Collections.sort(threadArrayList, Thread.durationComparator);
+                break;
+            case "Rating":
+                Collections.sort(threadArrayList, Thread.ratingComparator);
+                break;
+            case "Views":
+                Collections.sort(threadArrayList, Thread.viewsComparator);
+                break;
+            case "Title":
+                Collections.sort(threadArrayList, Thread.titleComparator);
+                break;
+            default:
+                Collections.sort(threadArrayList, Thread.titleComparator);
+                break;
+        }
     }
 
     public void makeNewThread() {
-        Thread thread = Thread.newRandomThread(newThread.getText().toString());
+        Thread thread = Thread.newRandomThread("");
 //        threadArrayList.add(thread);
 
         insertIntoDbFromThread(thread);
