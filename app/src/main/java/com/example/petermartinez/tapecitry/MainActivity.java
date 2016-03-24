@@ -1,9 +1,12 @@
 package com.example.petermartinez.tapecitry;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public ThreadAdapter mThreadAdapter;
     private CursorAdapter mCursorAdapter;
     private SQLiteDatabase db;
+    public static final String DB_DOES_NOT_EXIST = "true";
     public final float GALat = 37.791066f;
     public final float GALon = -122.401403f;
 
@@ -52,10 +56,28 @@ public class MainActivity extends AppCompatActivity {
         resultsListView = (ListView) findViewById(R.id.results_list_view);
         mThreadAdapter = new ThreadAdapter(this, threadArrayList);
 
-        resultsListView.setAdapter(mThreadAdapter);
-
         ThreadsSQLiteHelper mDbHelper = new ThreadsSQLiteHelper(MainActivity.this);
         db = mDbHelper.getWritableDatabase();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        if(sharedPreferences.getString(DB_DOES_NOT_EXIST, "true").equals("true")){
+            Log.i("sharedPrefs",sharedPreferences.getString(DB_DOES_NOT_EXIST, "true"));
+            preloadDB();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(MainActivity.DB_DOES_NOT_EXIST, "false");
+            editor.commit();
+            Log.i("sharedPrefs", sharedPreferences.getString(DB_DOES_NOT_EXIST, "true"));
+        }
+        threadArrayList.clear();
+        dumpCursorToArray();
+
+
+
+
+
+
+        resultsListView.setAdapter(mThreadAdapter);
+
 
 
 
@@ -64,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private long insertIntoDB(Thread thread){
+    private long insertIntoDbFromThread(Thread thread){
         ContentValues values = new ContentValues();
         values.put(ThreadsSQLiteHelper.COL_USER_ID, thread.getUser());
         values.put(ThreadsSQLiteHelper.COL_THR_TITLE, thread.getTitle());
@@ -73,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
         values.put(ThreadsSQLiteHelper.COL_NODE, -1);
         values.put(ThreadsSQLiteHelper.COL_DATE_CRE, thread.getDateCreated());
         values.put(ThreadsSQLiteHelper.COL_DATE_MOD, thread.getDateModified());
-        values.put(ThreadsSQLiteHelper.COL_ASSET_TYPES, thread.assetCheat);
-        values.put(ThreadsSQLiteHelper.COL_ASSET_COUNT, thread.assetCheatColor);
+        values.put(ThreadsSQLiteHelper.COL_ASSET_TYPES, thread.getAssetCheat());
+        values.put(ThreadsSQLiteHelper.COL_ASSET_COUNT, thread.getAssetCheatColor());
         values.put(ThreadsSQLiteHelper.COL_LAT, thread.getLat());
         values.put(ThreadsSQLiteHelper.COL_LON, thread.getLon());
         values.put(ThreadsSQLiteHelper.COL_DUR, thread.getDuration());
@@ -87,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
         long newRowId = db.insert(ThreadsSQLiteHelper.THREADS_TABLE_NAME, null,values);
         return newRowId;
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = Thread.newRandomThread(newThread.getText().toString());
 //        threadArrayList.add(thread);
 
-        insertIntoDB(thread);
+        insertIntoDbFromThread(thread);
         //notifydatasetchanged
 
         threadArrayList.clear();
@@ -137,9 +161,11 @@ public class MainActivity extends AppCompatActivity {
         while (cursor.isAfterLast() == false) {
             Thread thread = new Thread("cursor rip");
             Log.d("db output", cursor.getString(0));
-            for(int i = 0; i < colCount; i++){
-                Log.i("DB", cursor.getString(i));
-            }
+//            for(int i = 0; i < colCount; i++){
+//                Log.i("DB", colNames[i] + " : " + cursor.getString(i));
+//            }
+            Log.i("DB", "asset cheat color" + " : " + cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_ASSET_COUNT)));
+
             thread.setTitle(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_THR_TITLE)));
             thread.setRating(Float.parseFloat(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_RATING))));
             thread.setDuration(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_DUR))));
@@ -151,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
             thread.setAssetCheat(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_ASSET_TYPES))));
             thread.setAssetCheatColor(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_ASSET_COUNT))));
             thread.setUser(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ThreadsSQLiteHelper.COL_USER_ID))));
-            thread.setDistToPoint(Thread.haversineTwoPoints(thread.getLat(), thread.getLon(), GALat, GALon));
-            thread.setBearingToPoint(Thread.haversineTwoPoints(thread.getLat(), thread.getLon(), GALat, GALon));
+            thread.setDistToPoint(Thread.haversineTwoPoints(GALat, GALon, thread.getLat(), thread.getLon()));
+            thread.setBearingToPoint(Thread.bearing(GALat, GALon, thread.getLat(), thread.getLon()));
             cursor.moveToNext();
             threadArrayList.add(thread);
         }

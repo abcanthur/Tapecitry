@@ -1,6 +1,9 @@
 package com.example.petermartinez.tapecitry;
 
 import android.content.Context;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +40,14 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
         TextView distance = (TextView) view.findViewById(R.id.distance);
         TextView compass = (TextView) view.findViewById(R.id.compass);
 
+        ColorFilter cf = new PorterDuffColorFilter(thread.getAssetCheatColor(), PorterDuff.Mode.MULTIPLY);
 
         assetThumb.setImageResource(thread.getAssetCheat());
-        assetThumb.setColorFilter(thread.getAssetCheatColor());
-        assetThumb.setBackgroundColor(thread.getAssetCheatColor());
+//        assetThumb.setColorFilter(cf);
+//        assetThumb.setBackgroundColor(thread.getAssetCheatColor());
+//        assetThumb.setImageAlpha(150);
+//        assetThumb.setColorFilter(thread.getAssetCheatColor(), PorterDuff.Mode.LIGHTEN);
+//        assetThumb.setBackgroundColor(thread.getAssetCheatColor());
         ratingBar.setRating(thread.getRating());
         duration.setText(secondsToColons(thread.getDuration()));
 
@@ -70,6 +77,7 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
             //no. of contains in array
         }
         return coordNames[(int) directionid];
+//        return String.valueOf(directionid);
     }
 
     private String secondsToColons(int dur){

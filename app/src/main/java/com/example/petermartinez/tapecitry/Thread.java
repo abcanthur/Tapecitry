@@ -1,6 +1,8 @@
 package com.example.petermartinez.tapecitry;
 
 
+import android.util.Log;
+
 import java.math.RoundingMode;
 import java.util.Date;
 
@@ -41,14 +43,14 @@ public class Thread {
 
     public Thread(String title) {
         this.title = title;
-        int tempI = (int) (21 * Math.random());
-        this.rating = tempI/4;
+        int tempI = (int) (13 * Math.random());
+        this.rating = tempI/4 + 2;
         this.duration = (int) (600 * Math.random());
         this.dateCreated = (long) (System.currentTimeMillis() - 864000000*Math.random());
         this.dateModified = dateCreated;
         this.views = (int) (5000*Math.random());
         this.lat = getRandomSFLat();
-        this.lat = getRandomSFLon();
+        this.lon = getRandomSFLon();
         this.assetCheat = getRandomAsset((int) (16 * Math.random()));
         this.assetCheatColor = getRandomAssetColor((int) (16 * Math.random()));
         this.distToPoint = -1;
@@ -80,6 +82,7 @@ public class Thread {
             double y= Math.sin(longDiff)*Math.cos(latitude2);
             double x=Math.cos(latitude1)*Math.sin(latitude2)-Math.sin(latitude1)*Math.cos(latitude2)*Math.cos(longDiff);
             double resultDegree= (Math.toDegrees(Math.atan2(y, x))+360)%360;
+            Log.i("THREAD", "bearingDegree " + resultDegree);
             return (int) resultDegree;
         }
 
@@ -94,17 +97,17 @@ public class Thread {
     }
 
     public static String getRandomName(){
-        String[] article = {"The", "El", "La", "Los", "Las", "The", "The", "The", "A", "A", "" , "" , "", ""};
-        String[] place = {"Mission", "Valencia", "Coit", "Gold Rush", "Google", "Market", "Alcatraz", "Marin", "Potrero", "", "", "",""};
+        String[] article = {"The ", "El ", "La ", "Los ", "Las ", "The ", "The ", "The ", "A ", "A ", "" , "" , "", ""};
+        String[] place = {"Mission ", "Valencia ", "Coit ", "Gold Rush ", "Google ", "Market ", "Alcatraz ", "Marin ", "Potrero ", "", "", "",""};
         String[] thing = {"Cafe", "Taqueria", "Building", "Bistro", "Memorial", "Festival", "Massacre", "Battle", "Concert", "Tower", "Company", "","","",""};
         String name = "";
         int temp = (int) (Math.random()*article.length);
         name = name + article[temp];
         temp = (int) (Math.random()*place.length);
-        name = name + " " + place[temp];
+        name = name + place[temp];
         temp = (int) (Math.random()*thing.length);
-        name = name + " " + thing[temp];
-        if(name.equals("  ")){
+        name = name + thing[temp];
+        if(name.isEmpty()){
             return "Cafe La Taza";
         }
         return name;
@@ -180,7 +183,7 @@ public class Thread {
             case 13:
                 return (R.drawable.starbucks);
             case 14:
-                return (R.drawable.stump);
+                return (R.drawable.cafelataza);
             case 15:
                 return (R.drawable.transamerica);
             default:
@@ -223,17 +226,24 @@ public class Thread {
             case 15:
                 return (R.color.Color_15);
             default:
-                return (R.color.button_trans);
+                return (R.color.colorAccent);
         }
     }
 
 
     public float getRandomSFLat(){
-        return ((float) (37.734663 + .070040 * Math.random()));
+        float i = ((float) (37.734663 + .070040 * Math.random()));
+        Log.i("THREAD", "random Lat = " + i);
+        return i;
+//        return ((float) (37.734663 + .070040 * Math.random()));
+
     }
 
     public float getRandomSFLon(){
-        return ((float) (.060157 * Math.random() - 122.450963));
+        float i = ((float) ((.060157 * Math.random()) - 122.450963));
+        Log.i("THREAD", "random Log = " + i);
+        return i;
+//        return ((float) ((.060157 * Math.random()) - 122.450963));
     }
 
     public String getTitle() {
