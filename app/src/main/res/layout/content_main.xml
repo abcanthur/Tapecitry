@@ -21,7 +21,6 @@
         /> -->
     <ListView
         android:id="@+id/results_list_view"
-        android:layout_below="@+id/new_thread_maker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

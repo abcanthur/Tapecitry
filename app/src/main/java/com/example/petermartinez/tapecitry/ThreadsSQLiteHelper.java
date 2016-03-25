@@ -1,5 +1,6 @@
 package com.example.petermartinez.tapecitry;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -81,6 +82,7 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
         this.onCreate(db);
     }
 
+
     public Thread newRandomThread(String newTitle){
         if(newTitle.equals("")){
             newTitle = getRandomName();
@@ -88,6 +90,8 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
         Thread newThread = new Thread(newTitle);
         return newThread;
     }
+
+
 
     public String getRandomName(){
         String[] article = {"The", "El", "La", "Los", "Las", "The", "The", "The", "A", "A", "" , "" , "", "" ,"",""};
@@ -106,8 +110,33 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
         return name;
     }
 
-    public Cursor searchThreads(String query){
+    public Cursor getThreadsById(String[] query){
 
+        SQLiteDatabase db = this.getReadableDatabase();
+//        String[] idTitleLatLon = {COL_ID, COL_THR_TITLE, COL_ASSET_TYPES};
+//
+//        Cursor cursor = db.query(THREADS_TABLE_NAME, // a. table
+//                idTitleLatLon, // b. column names
+//                COL_ID + " LIKE ?", // c. selections
+//                new String[]{"%" + query + "%"}, // d. selections args
+//                null, // e. group by
+//                null, // f. having
+//                null, // g. order by
+//                null); // h. limit
+
+        Cursor cursor = db.rawQuery("SELECT " +
+                COL_ID + "," +
+        COL_THR_TITLE + "," +
+        COL_LAT + "," +
+        COL_LON + " FROM " +
+        THREADS_TABLE_NAME + " WHERE " +
+        COL_ID + " = ",
+        query);
+
+        return cursor;
+    }
+
+    public Cursor searchThreads(String query){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(THREADS_TABLE_NAME, // a. table
@@ -118,7 +147,6 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
                 null, // f. having
                 null, // g. order by
                 null); // h. limit
-
         return cursor;
     }
 }

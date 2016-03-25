@@ -42,8 +42,6 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
         TextView distance = (TextView) view.findViewById(R.id.distance);
         TextView compass = (TextView) view.findViewById(R.id.compass);
 
-        ColorFilter cf = new PorterDuffColorFilter(thread.getAssetCount(), PorterDuff.Mode.MULTIPLY);
-
         Picasso.with(getContext())
                 .load(thread.getAssetType())
                 .placeholder(android.R.drawable.ic_dialog_alert)
@@ -55,13 +53,42 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
         duration.setText(secondsToColons(thread.getDuration()));
 
         threadTitle.setText(thread.getTitle());
-        threadAge.setText("created " + String.valueOf(thread.getDateCreated()/86400000 - 16873) + " days ago");
-        threadViews.setText(String.valueOf(thread.getViews()) + " views");
+        threadAge.setText(formatAge(thread.getDateCreated()));
+        threadViews.setText(formatViews(thread.getViews()));
 
         distance.setText(formatDistance(thread.getDistToPoint()));
         compass.setText(getBearing(Math.round(thread.getBearingToPoint())));
 
         return view;
+    }
+
+    private String formatAge(long date){
+        long now = System.currentTimeMillis();
+        long age = now - date;
+        long days = age/86400000; //millis in a day
+        if(days > 365){
+            return "created " + days/365 + " years ago";
+        } else if (days > 70){
+            return "created " + days/30 + " months ago";
+        } else if (days > 13){
+            return "created " + days/7 + " weeks ago";
+        } else  if (days > 1){
+            return "created " + days + " days ago";
+        } else if (age > 900000){
+            return "created " + age/3600000 + " hours ago";
+        } else {
+            return "created " + age/600000 + " minutes ago";
+        }
+    }
+
+    private String formatViews(int views){
+        String viewsPrefix = String.valueOf(views);
+        String viewsSuffix = " views";
+        if(views > 1000){
+            viewsPrefix = String.valueOf((Math.round(views/100))/10);
+            viewsSuffix = "k"+viewsSuffix;
+        }
+        return viewsPrefix + viewsSuffix;
     }
 
     private String formatDistance(int meters){

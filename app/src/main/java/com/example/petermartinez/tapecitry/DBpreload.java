@@ -64,7 +64,8 @@ public class DBpreload extends AppCompatActivity {
         }
     }
 
-    private long insertIntoDbFullDetail(Thread thread){
+    public long insertIntoDbFullDetail(Thread thread){
+
         ContentValues values = new ContentValues();
         values.put(ThreadsSQLiteHelper.COL_USER_ID, thread.getUser());
         values.put(ThreadsSQLiteHelper.COL_THR_TITLE, thread.getTitle());
@@ -92,55 +93,55 @@ public class DBpreload extends AppCompatActivity {
         Thread thread;
         switch (i) {
             case 0:
-                thread = new Thread(6, "St Mary's Cathedral", -1, 1, -1,
+                thread = new Thread(-1, 6, "St Mary's Cathedral", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.stmarynew, R.color.Color_ZeroAlpha,
                         37.784956f, -122.425486f, 222, 4.75f, 10000, -1, 19356);
                 return thread;
             case 1:
-                thread = new Thread(6, "Old St Mary's Cathedral", -1, 1, -1,
+                thread = new Thread(-1, 6, "Old St Mary's Cathedral", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.stmaryold, R.color.Color_ZeroAlpha,
                         37.792605f, -122.405726f, 111, 3, 7653, -1, 7834);
                 return thread;
             case 2:
-                thread = new Thread(6, "Grace Cathedral", -1, 1, -1,
+                thread = new Thread(-1, 6, "Grace Cathedral", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.gracecathedral, R.color.Color_ZeroAlpha,
                         37.791926f, -122.412982f, 199, 4.5f, 934, -1, 8934);
                 return thread;
             case 3:
-                thread = new Thread(6, "Ferry Building", -1, 1, -1,
+                thread = new Thread(-1, 6, "Ferry Building", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.ferrybldgold, R.color.Color_ZeroAlpha,
                         37.795378f, -122.393552f, 154, 4f, 7833, -1, 9356);
                 return thread;
             case 4:
-                thread = new Thread(6, "Exploratorium", -1, 1, -1,
+                thread = new Thread(-1, 6, "Exploratorium", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.exploratorium, R.color.Color_ZeroAlpha,
                         37.800656f, -122.398568f, 222, 3.5f, 982, -1, 5936);
                 return thread;
             case 5:
-                thread = new Thread(6, "Lombard St", -1, 1, -1,
+                thread = new Thread(-1, 6, "Lombard St", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.lombardst, R.color.Color_ZeroAlpha,
                         37.802204f, -122.418058f, 555, 4f, 3455, -1, 34343);
                 return thread;
             case 6:
-                thread = new Thread(6, "Cafe La Taza - Post St", -1, 1, -1,
+                thread = new Thread(-1, 6, "Cafe La Taza - Post St", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.cafelataza, R.color.Color_ZeroAlpha,
                         37.788202f, -122.409575f, 60, 5f, 2403, -1, 5101);
                 return thread;
             case 7:
-                thread = new Thread(6, "Philz Cafe", -1, 1, -1,
+                thread = new Thread(-1, 6, "Philz Cafe", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.philz, R.color.Color_ZeroAlpha,
                         37.791655f, -122.398965f, 43, 4.25f, 234, -1, 3456);
                 return thread;
             default:
-                thread = new Thread(6, "Workshop Cafe", -1, 1, -1,
+                thread = new Thread(-1, 6, "Workshop Cafe", -1, 1, -1,
                         creationTimeStamp, creationTimeStamp,
                         R.drawable.workshop, R.color.Color_ZeroAlpha,
                         37.790673f, -122.402224f, 32, 4.5f, 45, -1, 2124);

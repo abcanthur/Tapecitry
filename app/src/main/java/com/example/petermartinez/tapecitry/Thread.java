@@ -2,6 +2,7 @@ package com.example.petermartinez.tapecitry;
 
 
 import android.annotation.TargetApi;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.Comparator;
@@ -11,6 +12,7 @@ import java.util.Comparator;
  */
 @TargetApi(19)
 public class Thread {
+    int id;
     int user;
     String title;
     int knot;
@@ -31,7 +33,8 @@ public class Thread {
     int bearingToPoint;
 
 
-    public Thread(int user, String title, int knot, int knotCount, int node, long dateCreated, long dateModified, int assetType, int assetCount, float lat, float lon, int duration, float rating, int ratingCount, int length, int views) {
+    public Thread(int id, int user, String title, int knot, int knotCount, int node, long dateCreated, long dateModified, int assetType, int assetCount, float lat, float lon, int duration, float rating, int ratingCount, int length, int views) {
+        this.id = id;
         this.user = user;
         this.title = title;
         this.knot = knot;
@@ -51,6 +54,7 @@ public class Thread {
     }
 
     public Thread(String title) {
+        this.id = -1;
         this.title = title;
         int tempI = (int) (13 * Math.random());
         this.rating = tempI/4 + 2;
@@ -253,6 +257,14 @@ public class Thread {
         Log.i("THREAD", "random Log = " + i);
         return i;
 //        return ((float) ((.060157 * Math.random()) - 122.450963));
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

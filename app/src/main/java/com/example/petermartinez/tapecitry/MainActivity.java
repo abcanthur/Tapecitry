@@ -19,10 +19,13 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -30,7 +33,6 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     public ArrayList<Thread> threadArrayList;
-    public EditText newThread;
     public ListView resultsListView;
     public ThreadAdapter mThreadAdapter;
     private SQLiteDatabase db;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public final float GALon = -122.401403f;
     public static final String CREATION_TIME_STAMP = "creationTimeStamp";
     public boolean isFirstRun = true;
+    public LinearLayout distanceBearing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,19 +69,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         threadArrayList = new ArrayList<Thread>();
-        newThread = (EditText) findViewById(R.id.new_thread_maker);
         resultsListView = (ListView) findViewById(R.id.results_list_view);
         mThreadAdapter = new ThreadAdapter(this, threadArrayList);
+
+        resultsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//                TextView distanceTextView = (TextView) view.findViewById(R.id.distance);
+//                TextView directionTextView = (TextView) view.findViewById(R.id.compass);
+//
+//                distanceTextView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        goToViewActivity(position);
+//                    }
+//                });
+//
+//                directionTextView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        goToViewActivity(position);
+//                    }
+//                });
+                goToViewActivity(position);
+            }
+        });
+
 
 
 
         ThreadsSQLiteHelper mDbHelper = ThreadsSQLiteHelper.getInstance(MainActivity.this);
         db = mDbHelper.getWritableDatabase();
 
-        threadArrayList.clear();
         resultsListView.setAdapter(mThreadAdapter);
+        resultsListView.invalidate();
 
+    }
+
+    private void goToViewActivity(int position){
+        Intent intent = new Intent(MainActivity.this,ViewActivity.class);
+        intent.putExtra("targetPosition", position);
+        int[] threadIds = new int[(threadArrayList.size())];
+        for(int i = 0; i < threadArrayList.size(); i++ ){
+            threadIds[i] = threadArrayList.get(i).getId();
+        }
+        intent.putExtra("threadIds", threadIds);
+        startActivity(intent);
     }
 
     @Override
@@ -144,24 +182,39 @@ public class MainActivity extends AppCompatActivity {
 
             //noinspection SimplifiableIfStatement
             case R.id.action_settings:
+                sortResultsBy("Age");
+                mThreadAdapter.notifyDataSetChanged();
+                resultsListView.invalidate();
                 return true;
             case R.id.sortAge:
                 sortResultsBy("Age");
+                mThreadAdapter.notifyDataSetChanged();
+                resultsListView.invalidate();
                 return true;
             case R.id.sortDistance:
                 sortResultsBy("Distance");
+                mThreadAdapter.notifyDataSetChanged();
+                resultsListView.invalidate();
                 return true;
             case R.id.sortDuration:
                 sortResultsBy("Duration");
+                mThreadAdapter.notifyDataSetChanged();
+                resultsListView.invalidate();
                 return true;
             case R.id.sortRating:
                 sortResultsBy("Rating");
+                mThreadAdapter.notifyDataSetChanged();
+                resultsListView.invalidate();
                 return true;
             case R.id.sortViews:
                 sortResultsBy("Views");
+                mThreadAdapter.notifyDataSetChanged();
+                resultsListView.invalidate();
                 return true;
             case R.id.sortTitle:
                 sortResultsBy("Title");
+                mThreadAdapter.notifyDataSetChanged();
+                resultsListView.invalidate();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

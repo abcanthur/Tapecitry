@@ -28,7 +28,7 @@
         android:elevation="5dp"
         android:layout_alignTop="@id/asset_thumbnail"
         android:layout_alignLeft="@id/asset_thumbnail"
-        android:layout_margin="4dp"
+        android:layout_margin="2dp"
         android:numStars="5"
         android:rating="3.75"
         android:stepSize=".25" />
@@ -40,8 +40,7 @@
         android:id="@+id/duration"
         android:layout_alignBottom="@id/asset_thumbnail"
         android:layout_alignRight="@id/asset_thumbnail"
-
-        android:layout_margin="4dp"
+        android:layout_margin="2dp"
         android:background="@color/button_trans"
         android:text="2:34"/>
     </RelativeLayout>
@@ -58,6 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:id="@+id/thread_title"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="thread"
         android:textSize="24sp"
         />
@@ -86,6 +87,7 @@
     android:layout_width="0dp"
     android:layout_height="100dp"
     android:layout_weight="1"
+    android:id="@+id/distance_bearing"
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
