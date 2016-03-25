@@ -138,6 +138,39 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
     }
 
     public Cursor searchThreads(String query){
+        if(query.contains(">") || query.contains("<")){
+            return searchThreadsByExpression(query);
+        } else {
+            return searchThreadsByTitle(query);
+        }
+    }
+
+    public Cursor searchThreadsByExpression(String query){
+
+        String[] args = query.split(" ");
+        SQLiteDatabase db = this.getReadableDatabase();
+        String searchColumn;
+        if(args[0].contains("iew")){
+            searchColumn = COL_VIEWS;
+        } else if (args[0].contains("urat")){
+            searchColumn = COL_DUR;
+        } else {
+            searchColumn = COL_RATING;
+        }
+
+        Cursor cursor = db.query(THREADS_TABLE_NAME, // a. table
+                THREADS_COLUMNS, // b. column names
+                searchColumn + " " + args[1] + " ?", // c. selections
+                new String[]{args[2]}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+        return cursor;
+    }
+
+    public Cursor searchThreadsByTitle(String query){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(THREADS_TABLE_NAME, // a. table

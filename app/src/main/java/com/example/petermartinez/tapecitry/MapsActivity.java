@@ -24,10 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class ViewActivity extends AppCompatActivity implements OnMapReadyCallback {
-    public ArrayList<Asset> assetArrayList;
-    public ListView assetListView;
-    public AssetAdapter mAssetAdapter;
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     public int[] threadIds;
     public double[] lats;
     public double[] lons;
@@ -36,22 +33,25 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     public int position;
     public int numberOfMarkers;
     public SQLiteDatabase db;
-    private TextView viewTextView;
+    private TextView mapsTitle;
+    private TextView mapsDistance;
     public final float GALat = 37.791066f;
     public final float GALon = -122.401403f;
+
 
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view);
-        viewTextView = (TextView) findViewById(R.id.view_text_view);
+        setContentView(R.layout.activity_maps);
+        mapsTitle = (TextView) findViewById(R.id.maps_title);
+        mapsDistance = (TextView) findViewById(R.id.maps_distance);
 
 
 
 //        final int position = getIntent().getIntExtra("targetPosition", 0);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ViewActivity.this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
 
         position = sharedPreferences.getInt(MainActivity.LIST_POSITION, 0);
 
@@ -68,41 +68,24 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         lons = new double[numberOfMarkers];
         titles = new String[numberOfMarkers];
 
-        ThreadsSQLiteHelper mDbHelper = ThreadsSQLiteHelper.getInstance(ViewActivity.this);
+        ThreadsSQLiteHelper mDbHelper = ThreadsSQLiteHelper.getInstance(MapsActivity.this);
         db = mDbHelper.getWritableDatabase();
         for (int i = 0; i < numberOfMarkers; i++) {
             String[] query1 = new String[1];
             query1[0] = query[i];
-            Cursor cursor = ThreadsSQLiteHelper.getInstance(ViewActivity.this).getThreadsById(query1);
+            Cursor cursor = ThreadsSQLiteHelper.getInstance(MapsActivity.this).getThreadsById(query1);
             dumpCursorForPointsTitles(cursor, i);
             cursor.close();
         }
-        viewTextView.setText(titles[position]);
+        mapsTitle.setText(titles[position]);
+        String distanceInMiles = ThreadAdapter.formatDistance(Thread.haversineTwoPoints(GALat, GALon, (float) lats[position], (float) lons[position]));
+        mapsDistance.setText(distanceInMiles + " miles");
 
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_map);
+        mapFragment.getMapAsync(this);
 
-
-
-            assetArrayList = new ArrayList<Asset>();
-
-        for(int i = 0; i < 10; i++){
-            if(Math.random() > .5){
-                if(Math.random() > .5){
-                    assetArrayList.add(new Asset(false));
-                } else {
-                    assetArrayList.add(new Asset(true));
-                }
-            }
-        }
-
-            assetListView = (ListView) findViewById(R.id.assets_list_view);
-            mAssetAdapter = new AssetAdapter(this, assetArrayList);
-            assetListView.setAdapter(mAssetAdapter);
-
-
-        }
+    }
 
 
     /**
@@ -129,12 +112,10 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(android.R.drawable.ic_delete)).position(origin).title("You are here"));
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter,15));
-        double[] lats1 = new double[] {GALat, lats[position]};
-        double[] lons1 = new double[] {GALon, lons[position]};
-        double lat1 = getDoubleMin(lats1);
-        double lon1 = getDoubleMin(lons1);
-        double lat2 = getDoubleMax(lats1);
-        double lon2 = getDoubleMax(lons1);
+        double lat1 = getDoubleMin(lats);
+        double lon1 = getDoubleMin(lons);
+        double lat2 = getDoubleMax(lats);
+        double lon2 = getDoubleMax(lons);
         if(lat1 == lat2){
             lat1 = lat1 - .0025;
             lat2 = lat2 + .0025;
@@ -143,9 +124,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
             lon1 = lon1 - .0025;
             lon2 = lon2 + .0025;
         }
-        double latDif = lat2 - lat1;
-        double lonDif = lon2 - lon1;
-        LatLngBounds zoomToMapMarkers = new LatLngBounds(new LatLng(lat1 - latDif, lon1 - lonDif), new LatLng(lat2 + latDif, lon2 + lonDif));
+        LatLngBounds zoomToMapMarkers = new LatLngBounds(new LatLng(lat1, lon1), new LatLng(lat2, lon2));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(zoomToMapMarkers, 40));
     }

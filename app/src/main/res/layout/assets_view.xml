@@ -16,7 +16,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/asset_image"
-        android:layout_marginLeft="48dp"
+        android:layout_alignTop="@id/asset_image"
+        android:paddingLeft="12dp"
         android:layout_marginRight="24dp"
         android:text=""
         android:id="@+id/asset_text"/>

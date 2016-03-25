@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 makeNewThread();
-                Snackbar.make(view, "we added a thread", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "we added a thread", Snackbar.LENGTH_SHORT)
+//                        .setAction("Action", null).show();
             }
         });
 
@@ -96,9 +96,19 @@ public class MainActivity extends AppCompatActivity {
 //                        goToViewActivity(position);
 //                    }
 //                });
-                goToViewActivity(position);
+                goToMapsActivity(position);
             }
         });
+
+        resultsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                goToViewActivity(position);
+                return true;
+            }
+        });
+
+
 
 
 
@@ -113,6 +123,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToViewActivity(int position){
         Intent intent = new Intent(MainActivity.this,ViewActivity.class);
+        intent.putExtra("targetPosition", position);
+        int[] threadIds = new int[(threadArrayList.size())];
+        for(int i = 0; i < threadArrayList.size(); i++ ){
+            threadIds[i] = threadArrayList.get(i).getId();
+        }
+        intent.putExtra("threadIds", threadIds);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(MainActivity.LIST_POSITION, position);
+        editor.commit();
+
+        startActivity(intent);
+    }
+    private void goToMapsActivity(int position){
+        Intent intent = new Intent(MainActivity.this,MapsActivity.class);
         intent.putExtra("targetPosition", position);
         int[] threadIds = new int[(threadArrayList.size())];
         for(int i = 0; i < threadArrayList.size(); i++ ){

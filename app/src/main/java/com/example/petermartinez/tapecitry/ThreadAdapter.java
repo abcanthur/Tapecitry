@@ -40,7 +40,7 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
         TextView threadViews = (TextView) view.findViewById(R.id.thread_views);
 
         TextView distance = (TextView) view.findViewById(R.id.distance);
-        TextView compass = (TextView) view.findViewById(R.id.compass);
+        ImageView compass = (ImageView) view.findViewById(R.id.compass);
 
         Picasso.with(getContext())
                 .load(thread.getAssetType())
@@ -57,7 +57,12 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
         threadViews.setText(formatViews(thread.getViews()));
 
         distance.setText(formatDistance(thread.getDistToPoint()));
-        compass.setText(getBearing(Math.round(thread.getBearingToPoint())));
+//        compass.setText(getBearing(Math.round(thread.getBearingToPoint())));
+        Picasso.with(getContext())
+                .load(R.drawable.bearing_arrow)
+                .placeholder(R.drawable.bearing_arrow)
+                .rotate(thread.getBearingToPoint())
+                .into(compass);
 
         return view;
     }
@@ -91,7 +96,7 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
         return viewsPrefix + viewsSuffix;
     }
 
-    private String formatDistance(int meters){
+    public static String formatDistance(int meters){
         String string = String.valueOf(Math.round((meters + 161) * 0.000621371)); //+161 ensures it's at least a tenth of a mile, very hacky
         String string2 = String.valueOf(Math.round((meters + 161) * 0.00621371));//actually makes it ten times longer
         string = string + "." + string2.charAt(string2.length()-1);
