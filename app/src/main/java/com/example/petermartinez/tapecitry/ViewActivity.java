@@ -9,8 +9,12 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +43,9 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView viewTextView;
     public final float GALat = 37.791066f;
     public final float GALon = -122.401403f;
+    private RatingBar rateThread;
+    private Button ratingButton;
+    private float userRating;
 
     private GoogleMap mMap;
 
@@ -48,6 +55,11 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_view);
         viewTextView = (TextView) findViewById(R.id.view_text_view);
 
+
+        rateThread = (RatingBar)findViewById(R.id.my_rating);
+        ratingButton = (Button)findViewById(R.id.rating_confirm);
+
+        addListenerOnButtonClick();
 
 
 //        final int position = getIntent().getIntExtra("targetPosition", 0);
@@ -147,7 +159,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         double lonDif = lon2 - lon1;
         LatLngBounds zoomToMapMarkers = new LatLngBounds(new LatLng(lat1 - latDif, lon1 - lonDif), new LatLng(lat2 + latDif, lon2 + lonDif));
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(zoomToMapMarkers, 40));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(zoomToMapMarkers, 100));
     }
 
     public void dumpCursorForPointsTitles(Cursor cursor, int i) {
@@ -181,6 +193,24 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
         return max;
+
+
+    }
+
+    public void addListenerOnButtonClick(){
+
+        //Performing action on Button Click
+        ratingButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View arg0) {
+                //Getting the rating and displaying it on the toast
+                userRating = rateThread.getRating();
+                Toast.makeText(ViewActivity.this, "you rated this thread a " + String.valueOf(userRating), Toast.LENGTH_LONG).show();
+
+            }
+
+        });
     }
 }
 

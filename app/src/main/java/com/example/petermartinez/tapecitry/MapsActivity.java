@@ -126,7 +126,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         LatLngBounds zoomToMapMarkers = new LatLngBounds(new LatLng(lat1, lon1), new LatLng(lat2, lon2));
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(zoomToMapMarkers, 40));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(zoomToMapMarkers, 160));
     }
 
     public void dumpCursorForPointsTitles(Cursor cursor, int i) {

@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         values.put(ThreadsSQLiteHelper.COL_DUR, thread.getDuration());
         values.put(ThreadsSQLiteHelper.COL_RATING, thread.getRating());
         int ratings = (int) (thread.getViews() / 2.5);
-        values.put(ThreadsSQLiteHelper.COL_RATINGS, ratings);
+        values.put(ThreadsSQLiteHelper.COL_RATINGS, 1);
         values.put(ThreadsSQLiteHelper.COL_LENGTH, -1);
         values.put(ThreadsSQLiteHelper.COL_VIEWS, thread.getViews());
 
@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
 
         threadArrayList.clear();
         Cursor cursor = db.query("THREADS", null, null, null, null, null, null);
-        Toast.makeText(MainActivity.this, String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
+//        Toast.makeText(MainActivity.this, String.valueOf(cursor.getCount()), Toast.LENGTH_LONG).show();
         Log.i("DB", "results count: " + String.valueOf(cursor.getCount()));
         dumpCursorToArray(cursor);
         cursor.close();

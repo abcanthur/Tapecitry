@@ -56,8 +56,8 @@ public class Thread {
     public Thread(String title) {
         this.id = -1;
         this.title = title;
-        int tempI = (int) (13 * Math.random());
-        this.rating = tempI/4 + 2;
+//        int tempI = (int) (13 * Math.random());
+        this.rating = (float) (4 * Math.random() + 2);
         this.duration = (int) (600 * Math.random());
         this.dateCreated = (long) (System.currentTimeMillis() - 864000000*Math.random());
         this.dateModified = dateCreated;
@@ -111,8 +111,8 @@ public class Thread {
 
     public static String getRandomName(){
         String[] article = {"The ", "El ", "La ", "Los ", "Las ", "The ", "The ", "The ", "A ", "A ", "" , "" , "", ""};
-        String[] place = {"Mission ", "Valencia ", "Coit ", "Gold Rush ", "Google ", "Market ", "Alcatraz ", "Marin ", "Potrero ", "", "", "",""};
-        String[] thing = {"Cafe", "Taqueria", "Building", "Bistro", "Memorial", "Festival", "Massacre", "Battle", "Concert", "Tower", "Company", "","","",""};
+        String[] place = {"Mission ", "Valencia ", "Coit ", "Gold Rush ", "Google ", "Market ", "Alcatraz ", "Marin ", "Potrero ", "",""};
+        String[] thing = {"Cafe", "Taqueria", "Building", "Bistro", "Memorial", "Festival", "Massacre", "Battle", "Concert", "Tower", "Company", "",""};
         String name = "";
         int temp = (int) (Math.random()*article.length);
         name = name + article[temp];
