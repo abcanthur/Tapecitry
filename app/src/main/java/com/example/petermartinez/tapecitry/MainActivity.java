@@ -28,6 +28,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.ls.LSInput;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CREATION_TIME_STAMP = "creationTimeStamp";
     public boolean isFirstRun = true;
     public LinearLayout distanceBearing;
+    public static final String LIST_POSITION = "listPosition";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +119,13 @@ public class MainActivity extends AppCompatActivity {
             threadIds[i] = threadArrayList.get(i).getId();
         }
         intent.putExtra("threadIds", threadIds);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(MainActivity.LIST_POSITION, position);
+        editor.commit();
+
         startActivity(intent);
     }
 

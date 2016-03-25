@@ -29,7 +29,7 @@ public class Asset {
         if(isText){
             this.essay = getIpsum();
         } else {
-            this.id = R.drawable.cafelataza;
+            this.id = Thread.getRandomAsset((int) (16 * Math.random()));
         }
     }
 

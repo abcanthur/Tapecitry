@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="400dp"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="48dp"
         android:id="@+id/asset_image"
@@ -16,10 +15,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="20dp"
+        android:layout_alignLeft="@id/asset_image"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="24dp"
+        android:text=""
         android:id="@+id/asset_text"/>
 
-</LinearLayout>
+</RelativeLayout>

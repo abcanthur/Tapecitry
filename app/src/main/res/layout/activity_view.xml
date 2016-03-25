@@ -10,6 +10,7 @@
         android:layout_weight="1"
         android:text="camera"
         android:textSize="32sp"
+        android:maxLines="1"
         android:gravity="center"/>
 
     <ListView
@@ -17,7 +18,8 @@
         android:layout_below="@id/view_text_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"/>
+        android:layout_weight="4"
+        android:dividerHeight="2.0sp"/>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"

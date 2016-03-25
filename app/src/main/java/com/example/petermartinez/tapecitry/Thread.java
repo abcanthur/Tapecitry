@@ -165,7 +165,7 @@ public class Thread {
         }
     }
 
-    public int getRandomAsset(int asset) {
+    public static int getRandomAsset(int asset) {
         switch (asset) {
             case 0:
                 return (R.drawable.alamosquare);
