@@ -24,6 +24,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     public ArrayList<Asset> assetArrayList;
     public ListView assetListView;
     public AssetAdapter mAssetAdapter;
+    public int[] threadIds;
     public LatLng[] points;
     public String[] titles;
     public int position;
@@ -37,38 +38,45 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_view);
 
         int position = getIntent().getIntExtra("targetPosition", 0);
-        int[] threadIds = getIntent().getIntArrayExtra("threadIds");
+        threadIds = getIntent().getIntArrayExtra("threadIds");
         String[] query = new String[threadIds.length];
         for (int i = 0; i < threadIds.length; i++) {
             query[i] = String.valueOf(threadIds[i]);
         }
 
+        points = new LatLng[threadIds.length];
+        titles = new String[threadIds.length];
+
         ThreadsSQLiteHelper mDbHelper = ThreadsSQLiteHelper.getInstance(ViewActivity.this);
         db = mDbHelper.getWritableDatabase();
-        Cursor cursor = ThreadsSQLiteHelper.getInstance(ViewActivity.this).getThreadsById(query);
-        dumpCursorForPointsTitles(cursor);
+        for (int i = 0; i < threadIds.length; i++) {
+            String[] query1 = new String[1];
+            query1[0] = query[i];
+            Cursor cursor = ThreadsSQLiteHelper.getInstance(ViewActivity.this).getThreadsById(query1);
+            dumpCursorForPointsTitles(cursor, i);
+            cursor.close();
+        }
+
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
 
 
-        cursor.close();
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+            assetArrayList = new ArrayList<Asset>();
 
+            assetArrayList.add(new Asset(false));
+            assetArrayList.add(new Asset(true));
+            assetArrayList.add(new Asset(false));
+            assetArrayList.add(new Asset(true));
 
-        assetArrayList = new ArrayList<Asset>();
-
-        assetArrayList.add(new Asset(false));
-        assetArrayList.add(new Asset(true));
-        assetArrayList.add(new Asset(false));
-        assetArrayList.add(new Asset(true));
-
-        assetListView = (ListView) findViewById(R.id.assets_list_view);
-        mAssetAdapter = new AssetAdapter(this, assetArrayList);
-        assetListView.setAdapter(mAssetAdapter);
+            assetListView = (ListView) findViewById(R.id.assets_list_view);
+            mAssetAdapter = new AssetAdapter(this, assetArrayList);
+            assetListView.setAdapter(mAssetAdapter);
 
 
-    }
+        }
+
 
     /**
      * Manipulates the map once available.
@@ -83,8 +91,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng mapCenter = new LatLng(0,0);
-        // Add a marker in Sydney and move the camera
-        for (int i = 0; i < titles.length; i++) {
+        for (int i = 0; i < threadIds.length; i++) {
             if (i == position) {
                 mMap.addMarker(new MarkerOptions().position(points[i]).title(titles[i]));
                 mapCenter = points[i];
@@ -95,11 +102,9 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mapCenter));
     }
 
-    public void dumpCursorForPointsTitles(Cursor cursor) {
+    public void dumpCursorForPointsTitles(Cursor cursor, int i) {
         cursor.moveToFirst();
-        int i = 0;
         while (cursor.isAfterLast() == false) {
-
             titles[i] = cursor.getString(1);
             double lat = Double.parseDouble(cursor.getString(2));
             double lon = Double.parseDouble(cursor.getString(3));

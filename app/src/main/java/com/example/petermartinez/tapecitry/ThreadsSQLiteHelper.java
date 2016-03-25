@@ -113,25 +113,26 @@ public class ThreadsSQLiteHelper extends SQLiteOpenHelper implements BaseColumns
     public Cursor getThreadsById(String[] query){
 
         SQLiteDatabase db = this.getReadableDatabase();
-//        String[] idTitleLatLon = {COL_ID, COL_THR_TITLE, COL_ASSET_TYPES};
-//
-//        Cursor cursor = db.query(THREADS_TABLE_NAME, // a. table
-//                idTitleLatLon, // b. column names
-//                COL_ID + " LIKE ?", // c. selections
-//                new String[]{"%" + query + "%"}, // d. selections args
-//                null, // e. group by
-//                null, // f. having
-//                null, // g. order by
-//                null); // h. limit
+        String[] idTitleLatLon = {COL_ID, COL_THR_TITLE, COL_LAT, COL_LON, COL_ASSET_TYPES};
 
-        Cursor cursor = db.rawQuery("SELECT " +
-                COL_ID + "," +
-        COL_THR_TITLE + "," +
-        COL_LAT + "," +
-        COL_LON + " FROM " +
-        THREADS_TABLE_NAME + " WHERE " +
-        COL_ID + " = ",
-        query);
+        Cursor cursor = db.query(THREADS_TABLE_NAME, // a. table
+                idTitleLatLon, // b. column names
+                COL_ID + " = ?", // c. selections
+                query, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+
+
+//        Cursor cursor = db.rawQuery("SELECT " +
+//                COL_ID + "," +
+//        COL_THR_TITLE + "," +
+//        COL_LAT + "," +
+//        COL_LON + " FROM " +
+//        THREADS_TABLE_NAME + " WHERE " +
+//        COL_ID + " = ?",
+//        query);
 
         return cursor;
     }
