@@ -79,7 +79,7 @@ public class ThreadAdapter extends ArrayAdapter<Thread> {
             return "created " + days/7 + " weeks ago";
         } else  if (days > 1){
             return "created " + days + " days ago";
-        } else if (age > 900000){
+        } else if (age > 5400000){
             return "created " + age/3600000 + " hours ago";
         } else {
             return "created " + age/600000 + " minutes ago";
